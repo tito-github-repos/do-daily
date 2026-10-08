@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 const links = [
   { label: "Home", href: "/", id: "home" },
@@ -23,8 +31,11 @@ export default function Navbar() {
       const contact = document.getElementById("contact");
       if (!contact) return;
 
-      const reachedContact = contact.getBoundingClientRect().top <= window.innerHeight * 0.5;
-      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      const reachedContact =
+        contact.getBoundingClientRect().top <= window.innerHeight * 0.5;
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
 
       setActiveId(reachedContact || atBottom ? "contact" : "home");
     };
@@ -43,21 +54,51 @@ export default function Navbar() {
       <AppBar
         position="fixed"
         elevation={0}
-        sx={{ bgcolor: "var(--white)", color: "var(--black)", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}
+        sx={{
+          bgcolor: "var(--white)",
+          color: "var(--black)",
+          boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
+        }}
       >
         <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ justifyContent: "space-between", minHeight: { xs: 64, md: 80 } }}>
+          <Toolbar
+            disableGutters
+            sx={{
+              justifyContent: "space-between",
+              minHeight: { xs: 64, md: 80 },
+            }}
+          >
             {/* Logo */}
-            <Stack component={Link} href="/" direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
-              <Box sx={{ position: "relative", width: { xs: 36, md: 48 }, height: { xs: 36, md: 48 } }}>
+            <Stack
+              component={Link}
+              href="/"
+              direction="row"
+              spacing={1.5}
+              sx={{ alignItems: "center" }}
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  width: { xs: 36, md: 48 },
+                  height: { xs: 36, md: 48 },
+                }}
+              >
                 <Image src="/b-svg.svg" alt="Do Daily logo" fill priority />
               </Box>
               <Typography
                 variant="h5"
                 component="span"
-                sx={{ fontWeight: 700, color: "var(--primary)", fontSize: { xs: "1.4rem", md: "1.9rem" } }}
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: "1.4rem", md: "1.9rem" },
+                }}
               >
-                Do Daily
+                <Box component="span" sx={{ color: "var(--black)" }}>
+                  Do
+                </Box>{" "}
+                <Box component="span" sx={{ color: "var(--primary)" }}>
+                  Daily
+                </Box>
               </Typography>
             </Stack>
 
@@ -81,7 +122,10 @@ export default function Navbar() {
                       color: isActive ? "var(--primary)" : "#1f3d2b",
                       borderBottom: "3px solid",
                       borderColor: isActive ? "var(--primary)" : "transparent",
-                      "&:hover": { bgcolor: "transparent", color: "var(--primary)" },
+                      "&:hover": {
+                        bgcolor: "transparent",
+                        color: "var(--primary)",
+                      },
                     }}
                   >
                     {label}
