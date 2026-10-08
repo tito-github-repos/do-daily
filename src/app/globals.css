@@ -76,6 +76,6 @@ img {
   pointer-events: none;
   -webkit-user-drag: none;
 }
-/* button, .MuiTypography-root {
+button, .MuiTypography-root {
   font-family: inherit;
-} */
+}
