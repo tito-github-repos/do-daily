@@ -8,6 +8,7 @@ import Footer from "./components/footer";
 export const metadata: Metadata = {
   title: "Do Daily - Train Your Brain",
   description: "Train your brain. 10 minutes a day.",
+  other: { "color-scheme": "light" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
