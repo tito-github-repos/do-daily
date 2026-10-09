@@ -1,14 +1,13 @@
 "use client";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
-import FaceIcon from "@mui/icons-material/Face";
 import PsychologyIcon from "@mui/icons-material/Psychology";
-import Face3Icon from "@mui/icons-material/Face3";
-
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 const groups = [
-  { label: "All Age Groups", icon: <FaceIcon /> },
+  { label: "All Age Groups", icon: <Diversity3Icon /> },
   { label: "All Minds", icon: <PsychologyIcon /> },
-  { label: "One Goal", icon: <Face3Icon /> },
+  { label: "One Goal", icon: <FlagCircleIcon /> },
 ];
 
 export default function Mission() {

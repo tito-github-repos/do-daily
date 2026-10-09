@@ -4,6 +4,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TimerIcon from "@mui/icons-material/Timer";
 import EditIcon from "@mui/icons-material/Edit";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
 const steps = [
   {
@@ -20,7 +21,7 @@ const steps = [
   },
   {
     no: "03",
-    icon: <EditIcon />,
+    icon: <EditNoteIcon />,
     title: "Use It Repeatedly",
     text: "Practice with a pencil so the sheets can be reused. Erase it after every iteration.",
   },

@@ -77,14 +77,18 @@ export default function Navbar() {
               sx={{ alignItems: "center" }}
             >
               <Box
+                component="img"
+                src="/innovative-brain-icon.svg"
+                alt="Do Daily brain logo"
                 sx={{
-                  position: "relative",
-                  width: { xs: 36, md: 48 },
-                  height: { xs: 36, md: 48 },
+                  width: { xs: 30, md: 40},
+                  height: { xs: 30, md: 40 },
+                  objectFit: "contain",
+                  display: "block",
+                  filter:
+                    "brightness(0) saturate(100%) invert(48%) sepia(83%) saturate(424%) hue-rotate(85deg) brightness(92%) contrast(91%)",
                 }}
-              >
-                <Image src="/b-svg.svg" alt="Do Daily logo" fill priority />
-              </Box>
+              />
               <Typography
                 variant="h5"
                 component="span"
