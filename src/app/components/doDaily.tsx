@@ -1,24 +1,30 @@
 "use client";
 import { Box, Container, Grid, Stack, Typography } from "@mui/material";
 import PsychologyIcon from "@mui/icons-material/Psychology";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import BoltIcon from "@mui/icons-material/Bolt";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import FaceIcon from "@mui/icons-material/Face";
+
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+import SpeedIcon from "@mui/icons-material/Speed";
+
 
 const benefits = [
-  { label: "Better Focus", icon: <PsychologyIcon /> },
-  { label: "Sharper Memory", icon: <GpsFixedIcon /> },
-  { label: "Improved Speed", icon: <BoltIcon /> },
+  { label: "Better Focus", icon: <TrackChangesIcon /> },
+  { label: "Sharper Memory", icon: <PsychologyIcon /> },
+  { label: "Improved Speed", icon: <SpeedIcon /> },
   { label: "Greater Confidence", icon: <SentimentSatisfiedAltIcon /> },
 ];
 
+
+
+
+
 const highlights = [
-  { label: "10 Minutes", icon: <GroupsIcon /> },
+  { label: "10 Minutes", icon: <TimerOutlinedIcon /> },
   { label: "Every Day", icon: <CalendarMonthIcon /> },
-  { label: "For Everyone", icon: <FaceIcon /> },
+  { label: "For Everyone", icon: <GroupsIcon /> },
 ];
 
 export default function WhatIsDoDaily() {
