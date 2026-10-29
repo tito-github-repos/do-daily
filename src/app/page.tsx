@@ -1,9 +1,11 @@
 import Contact from "./components/contact";
 import WhatIsDoDaily from "./components/doDaily";
+import ExerciseSheets from "./components/exercisesheets";
 import Goal from "./components/goal";
 import Hero from "./components/hero";
 import HowItWorks from "./components/howItWorks";
 import Mission from "./components/mission";
+import Pillars from "./components/pillars";
 import StartExercise from "./components/startExcercise";
 
 
@@ -13,10 +15,14 @@ export default function Home() {
     <>
       <Hero />
       <Mission />
-      <WhatIsDoDaily/>
-      <HowItWorks/>
-      <StartExercise/>
-      <Goal/>
+      <Pillars />
+      <WhatIsDoDaily />
+      <ExerciseSheets />
+     
+     
+      {/* <HowItWorks/> */}
+      {/* <StartExercise/> */}
+      {/* <Goal/> */}
       <Contact/>
     </>
   );

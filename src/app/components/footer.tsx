@@ -38,23 +38,28 @@ export default function Footer() {
         borderTop: "1px solid",
         borderColor: "rgba(255, 255, 255, 0.1)",
         bgcolor: "var(--black)",
-        py: 3,
+        py: { xs: 3, md: 3 },
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 2,
+            textAlign: { xs: "center", md: "left" },
+            gap: { xs: 2, md: 3 },
           }}
         >
           {/* Copyright */}
           <Typography
             variant="body2"
-            sx={{ color: "rgba(255, 255, 255, 0.7)", order: { xs: 3, md: 1 } }}
+            sx={{
+              color: "rgba(255, 255, 255, 0.7)",
+              order: { xs: 3, md: 1 },
+              fontSize: { xs: "0.8rem", md: "0.875rem" },
+            }}
           >
             &copy; 2026 Do Daily. All rights reserved.
           </Typography>
@@ -81,7 +86,10 @@ export default function Footer() {
           <Box
             sx={{
               display: "flex",
-              gap: 3,
+              flexWrap: "wrap",
+              justifyContent: "center",
+              columnGap: { xs: 2, sm: 3 },
+              rowGap: 0.5,
               order: { xs: 2, md: 3 },
             }}
           >
@@ -94,6 +102,7 @@ export default function Footer() {
                 sx={{
                   color: "rgba(255, 255, 255, 0.7)",
                   textDecoration: "none",
+                  fontSize: { xs: "0.8rem", md: "0.875rem" },
                   transition: "color 0.25s ease",
                   "&:hover": {
                     color: "var(--primary)",
