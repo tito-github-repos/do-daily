@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -60,11 +59,12 @@ export default function Navbar() {
           boxShadow: "0 1px 8px rgba(0,0,0,0.06)",
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
           <Toolbar
             disableGutters
             sx={{
               justifyContent: "space-between",
+              gap: 1,
               minHeight: { xs: 64, md: 80 },
             }}
           >
@@ -73,16 +73,16 @@ export default function Navbar() {
               component={Link}
               href="/"
               direction="row"
-              spacing={1.5}
-              sx={{ alignItems: "center" }}
+              spacing={{ xs: 1, md: 1.5 }}
+              sx={{ alignItems: "center", flexShrink: 0, textDecoration: "none" }}
             >
               <Box
                 component="img"
                 src="/innovative-brain-icon.svg"
                 alt="Do Daily brain logo"
                 sx={{
-                  width: { xs: 30, md: 40},
-                  height: { xs: 30, md: 40 },
+                  width: { xs: 28, sm: 32, md: 40 },
+                  height: { xs: 28, sm: 32, md: 40 },
                   objectFit: "contain",
                   display: "block",
                   filter:
@@ -94,7 +94,8 @@ export default function Navbar() {
                 component="span"
                 sx={{
                   fontWeight: 700,
-                  fontSize: { xs: "1.4rem", md: "1.9rem" },
+                  whiteSpace: "nowrap",
+                  fontSize: { xs: "1.25rem", sm: "1.5rem", md: "1.9rem" },
                 }}
               >
                 <Box component="span" sx={{ color: "var(--black)" }}>
@@ -107,7 +108,7 @@ export default function Navbar() {
             </Stack>
 
             {/* Menu */}
-            <Stack direction="row" spacing={{ xs: 0.5, md: 3 }}>
+            <Stack direction="row" spacing={{ xs: 0, sm: 1, md: 3 }}>
               {links.map(({ label, href, id }) => {
                 const isActive = pathname === "/" && activeId === id;
                 return (
@@ -120,9 +121,10 @@ export default function Navbar() {
                     sx={{
                       textTransform: "none",
                       fontWeight: 500,
-                      fontSize: { xs: "0.95rem", md: "1.1rem" },
+                      minWidth: 0,
+                      fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
                       borderRadius: 0,
-                      px: { xs: 1, md: 1.5 },
+                      px: { xs: 0.75, sm: 1.25, md: 1.5 },
                       color: isActive ? "var(--primary)" : "#1f3d2b",
                       borderBottom: "3px solid",
                       borderColor: isActive ? "var(--primary)" : "transparent",

@@ -80,3 +80,8 @@ img {
 button, .MuiTypography-root {
   font-family: inherit;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
