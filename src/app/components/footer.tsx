@@ -65,7 +65,7 @@ export default function Footer() {
           </Typography>
 
           {/* Social icons */}
-          <Box sx={{ display: "flex", gap: 1, order: { xs: 1, md: 2 } }}>
+          {/* <Box sx={{ display: "flex", gap: 1, order: { xs: 1, md: 2 } }}>
             {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
               <IconButton
                 key={label}
@@ -80,7 +80,7 @@ export default function Footer() {
                 <Icon fontSize="small" />
               </IconButton>
             ))}
-          </Box>
+          </Box> */}
 
           {/* Legal links */}
           <Box
