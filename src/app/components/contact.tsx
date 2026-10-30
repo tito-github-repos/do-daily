@@ -10,8 +10,8 @@ type Item = { icon: React.ReactNode; href?: string; lines: string[] };
 
 const columns: Item[][] = [
   [
-    { icon: <PhoneIcon />, href: "tel:+919499953256", lines: ["+91 9499953256"] },
-    { icon: <EmailIcon />, href: "mailto:dodaily@gmail.com", lines: ["dodaily@gmail.com"] },
+    { icon: <PhoneIcon />, href: "tel:+919499953257", lines: ["+91 9499953257"] },
+    { icon: <EmailIcon />, href: "mailto:dodailyusers@gmail.com", lines: ["dodailyusers@gmail.com"] },
   ],
   [
     {
@@ -65,7 +65,7 @@ function Row({ icon, href, lines }: Item) {
 
 export default function Contact() {
   return (
-    <Box component="section" id="contact" sx={{ py: { xs: 4, md: 6 }, scrollMarginTop: { xs: 64, md: 80 } }}>
+    <Box component="section" id="contact" sx={{ bgcolor: "var(--primary-light)", py: { xs: 4, md: 6 }, scrollMarginTop: { xs: 64, md: 80 } }}>
       <Container maxWidth="lg">
         <Grid container rowSpacing={{ xs: 3, md: 4 }} sx={{ alignItems: "center", pt: { xs: 2, md: 5 } }}>
           {/* Heading */}
