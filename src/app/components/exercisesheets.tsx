@@ -1,10 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { PREFILL_EVENT, REGISTERED_EVENT } from "@/lib/events";
+import { downloadSheet } from "@/lib/downloadSheet";
 import DownloadDialog from "./downloadDialog";
 
 const DIVIDER = "1px solid #16a34a33";
@@ -24,11 +33,18 @@ const buttonSx = {
     bgcolor: "var(--primary)",
     filter: "brightness(0.92)",
   },
+  "&.Mui-disabled": {
+    bgcolor: "var(--primary)",
+    color: "var(--white)",
+    opacity: 0.7,
+  },
 } as const;
 
 export default function ExerciseSheets() {
   const [registered, setRegistered] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState("");
 
   // On load: ask the server whether this visitor already has access
   useEffect(() => {
@@ -50,6 +66,23 @@ export default function ExerciseSheets() {
       window.removeEventListener(REGISTERED_EVENT, onRegistered);
     };
   }, []);
+
+  // Registered visitors: fetch the PDF; if access has gone, fall back to the email popup
+  const handleDownload = async () => {
+    if (downloading) return;
+
+    setDownloadError("");
+    setDownloading(true);
+    const result = await downloadSheet();
+    setDownloading(false);
+
+    if (result === "unauthorized") {
+      setRegistered(false);
+      setDialogOpen(true);
+    } else if (result === "error") {
+      setDownloadError("The file couldn't be downloaded right now. Please try again.");
+    }
+  };
 
   // "Register now" inside the popup: close it, scroll to the form, pre-fill the email
   const handleRegisterFromDialog = (email: string) => {
@@ -192,12 +225,18 @@ export default function ExerciseSheets() {
 
               {registered ? (
                 <Button
-                  component="a"
-                  href="/api/download"
-                  download
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={downloading}
                   variant="contained"
                   fullWidth
-                  startIcon={<DownloadIcon />}
+                  startIcon={
+                    downloading ? (
+                      <CircularProgress size={18} sx={{ color: "var(--white)" }} />
+                    ) : (
+                      <DownloadIcon />
+                    )
+                  }
                   sx={buttonSx}
                 >
                   Download Exercise Sheet
@@ -213,6 +252,12 @@ export default function ExerciseSheets() {
                 >
                   Download Exercise Sheet
                 </Button>
+              )}
+
+              {downloadError && (
+                <Alert severity="error" sx={{ mt: 2, textAlign: "left" }}>
+                  {downloadError}
+                </Alert>
               )}
 
               {/* Share line, right under the download button */}

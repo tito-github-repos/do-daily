@@ -19,6 +19,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import type { TurnstileInstance } from "@marsidev/react-turnstile";
 import { ValidationError } from "yup";
 import { emailSchema } from "@/lib/validation";
+import { downloadSheet } from "@/lib/downloadSheet";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 const LABEL_ID = "dd-dialog-title";
@@ -104,6 +105,24 @@ function DialogShell({ open, onClose, onExited, children }: ShellProps) {
 }
 
 function SuccessBody({ title, message }: { title: string; message: string }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleDownload = async () => {
+    if (busy) return;
+
+    setBusy(true);
+    setError("");
+    const result = await downloadSheet();
+    setBusy(false);
+
+    if (result === "unauthorized") {
+      setError("Your access has expired. Please close this and verify your email again.");
+    } else if (result === "error") {
+      setError("The file couldn't be downloaded right now. Please try again.");
+    }
+  };
+
   return (
     <Box sx={{ textAlign: "center" }}>
       <CheckCircleIcon sx={{ fontSize: 56, color: "var(--primary)", mb: 1 }} />
@@ -112,16 +131,27 @@ function SuccessBody({ title, message }: { title: string; message: string }) {
       </Typography>
       <Typography sx={{ color: "#3f5a4a", mb: 3 }}>{message}</Typography>
       <Button
-        component="a"
-        href="/api/download"
-        download
+        type="button"
+        onClick={handleDownload}
+        disabled={busy}
         variant="contained"
         fullWidth
-        startIcon={<DownloadIcon />}
+        startIcon={
+          busy ? (
+            <CircularProgress size={18} sx={{ color: "var(--white)" }} />
+          ) : (
+            <DownloadIcon />
+          )
+        }
         sx={primaryButtonSx}
       >
         Download Exercise Sheet
       </Button>
+      {error && (
+        <Alert severity="error" sx={{ mt: 2, textAlign: "left" }}>
+          {error}
+        </Alert>
+      )}
     </Box>
   );
 }
@@ -132,14 +162,30 @@ type SuccessDialogProps = {
   open: boolean;
   onClose: () => void;
   name?: string;
+  alreadyRegistered?: boolean;
 };
 
-export function SuccessDialog({ open, onClose, name }: SuccessDialogProps) {
+export function SuccessDialog({
+  open,
+  onClose,
+  name,
+  alreadyRegistered = false,
+}: SuccessDialogProps) {
+  const greeting = name ? `, ${name}` : "";
+
   return (
     <DialogShell open={open} onClose={onClose}>
       <SuccessBody
-        title={`You're registered${name ? `, ${name}` : ""}!`}
-        message="Thank you for joining Do Daily. Your exercise sheet is ready."
+        title={
+          alreadyRegistered
+            ? `You're already registered${greeting}!`
+            : `You're registered${greeting}!`
+        }
+        message={
+          alreadyRegistered
+            ? "This email is already registered with Do Daily. Your exercise sheet is ready."
+            : "Thank you for joining Do Daily. Your exercise sheet is ready."
+        }
       />
     </DialogShell>
   );
