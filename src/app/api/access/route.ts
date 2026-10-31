@@ -3,7 +3,7 @@ import {
   ACCESS_COOKIE,
   ACCESS_MAX_AGE_SECONDS,
   createAccessToken,
-  verifyAccessToken,
+  hasActiveAccess,
 } from "@/lib/access";
 import { prisma } from "@/lib/prisma";
 import { emailSchema } from "@/lib/validation";
@@ -13,8 +13,24 @@ const NO_STORE = { "Cache-Control": "private, no-store" };
 
 // Does this browser already have download access?
 export async function GET(req: NextRequest) {
-  const registered = verifyAccessToken(req.cookies.get(ACCESS_COOKIE)?.value);
-  return NextResponse.json({ registered }, { headers: NO_STORE });
+  const cookie = req.cookies.get(ACCESS_COOKIE)?.value;
+
+  try {
+    const registered = await hasActiveAccess(cookie);
+    const res = NextResponse.json({ registered }, { headers: NO_STORE });
+
+    // A leftover cookie that no longer works (registration deleted, expired, bad signature)
+    if (cookie && !registered) {
+      res.cookies.set(ACCESS_COOKIE, "", { path: "/", maxAge: 0 });
+    }
+    return res;
+  } catch (err) {
+    console.error("Access check failed:", err);
+    return NextResponse.json(
+      { registered: false },
+      { status: 503, headers: NO_STORE }
+    );
+  }
 }
 
 // Returning visitor: is this email registered? If yes, grant access.
@@ -92,10 +108,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 5. Registered: grant download access
+  // 5. Registered: grant download access, tied to this registration
   let accessToken: string;
   try {
-    accessToken = createAccessToken();
+    accessToken = createAccessToken(found.id);
   } catch (err) {
     console.error("Could not create access token:", err);
     return NextResponse.json(

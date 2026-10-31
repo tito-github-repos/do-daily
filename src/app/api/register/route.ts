@@ -15,9 +15,9 @@ function json(body: Record<string, unknown>, status = 200) {
   return NextResponse.json(body, { status, headers: NO_STORE });
 }
 
-// Same cookie /api/access sets, so the download button works right away
-function withAccess(res: NextResponse): NextResponse {
-  res.cookies.set(ACCESS_COOKIE, createAccessToken(), {
+// Sets the download cookie, tied to this registration's id
+function withAccess(res: NextResponse, registrationId: number): NextResponse {
+  res.cookies.set(ACCESS_COOKIE, createAccessToken(registrationId), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -27,7 +27,7 @@ function withAccess(res: NextResponse): NextResponse {
   return res;
 }
 
-function alreadyRegistered() {
+function alreadyRegistered(registrationId: number) {
   return withAccess(
     json(
       {
@@ -37,6 +37,7 @@ function alreadyRegistered() {
       },
       409,
     ),
+    registrationId,
   );
 }
 
@@ -104,26 +105,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 5. Already registered?
+    // 5. Already registered? Only the email is unique.
     const existing = await prisma.registration.findUnique({
       where: { email },
       select: { id: true },
     });
-    if (existing) return alreadyRegistered();
+    if (existing) return alreadyRegistered(existing.id);
 
     // 6. Create (handles two submissions racing each other)
     try {
-      await prisma.registration.create({
-        data: { name, email, phone }, // rename `phone` if your Prisma field is `mobile`
+      const created = await prisma.registration.create({
+        data: { name, email, phone },
+        select: { id: true },
       });
+      return withAccess(json({ success: true }), created.id);
     } catch (createError) {
       if ((createError as { code?: string })?.code === "P2002") {
-        return alreadyRegistered();
+        // Someone else saved this email first
+        const raced = await prisma.registration.findUnique({
+          where: { email },
+          select: { id: true },
+        });
+        if (raced) return alreadyRegistered(raced.id);
       }
       throw createError;
     }
-
-    return withAccess(json({ success: true }));
   } catch (error) {
     console.error("Registration Error:", error);
     return json({ success: false, message: "Something went wrong" }, 500);

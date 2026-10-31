@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
-import { ACCESS_COOKIE, verifyAccessToken } from "@/lib/access";
+import { ACCESS_COOKIE, hasActiveAccess } from "@/lib/access";
 
 const FILE_PATH = path.join(
   process.cwd(),
@@ -10,7 +10,19 @@ const FILE_PATH = path.join(
 );
 
 export async function GET(req: NextRequest) {
-  if (!verifyAccessToken(req.cookies.get(ACCESS_COOKIE)?.value)) {
+  // Genuine cookie AND the registration still exists in the database
+  let allowed = false;
+  try {
+    allowed = await hasActiveAccess(req.cookies.get(ACCESS_COOKIE)?.value);
+  } catch (err) {
+    console.error("Access check failed:", err);
+    return NextResponse.json(
+      { success: false, message: "Something went wrong. Please try again." },
+      { status: 503 }
+    );
+  }
+
+  if (!allowed) {
     return NextResponse.json(
       { success: false, message: "Please register to download the exercise sheet." },
       { status: 401 }
