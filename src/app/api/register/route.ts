@@ -55,9 +55,22 @@ export async function POST(req: NextRequest) {
       return json({ success: false, message: "Invalid request." }, 400);
     }
 
-    // 2. Honeypot: pretend success, do nothing
+    // 2. Honeypot: a filled hidden field means a bot (or a browser that autofilled it).
+    //    Save nothing, and never tell the visitor they are registered.
     if (typeof body.website === "string" && body.website.trim() !== "") {
-      return json({ success: true });
+      console.warn(
+        "Honeypot field was filled:",
+        JSON.stringify(body.website.slice(0, 60)),
+        "| user-agent:",
+        req.headers.get("user-agent"),
+      );
+      return json(
+        {
+          success: false,
+          message: "Something went wrong. Please refresh the page and try again.",
+        },
+        400,
+      );
     }
 
     // 3. Validate + sanitize with the same schema the form uses
