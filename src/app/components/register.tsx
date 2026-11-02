@@ -331,7 +331,9 @@ export default function Register() {
                 noValidate
                 sx={{ position: "relative", display: "grid", gap: 2.5 }}
               >
-                {/* Honeypot: off-screen, not display:none, hidden from users and screen readers */}
+                {/* Honeypot: off-screen and hidden from users and screen readers.
+                    Odd name + readOnly + random autoComplete so browser autofill and
+                    password managers never fill it. A real visitor must never send a value here. */}
                 <Box
                   aria-hidden="true"
                   sx={{
@@ -344,9 +346,13 @@ export default function Register() {
                 >
                   <input
                     type="text"
-                    name="website"
+                    name="hp_k7x2"
+                    id="hp_k7x2"
                     tabIndex={-1}
-                    autoComplete="off"
+                    autoComplete="nope"
+                    readOnly
+                    data-lpignore="true"
+                    data-1p-ignore="true"
                     value={values.website}
                     onChange={handleChange("website")}
                   />
