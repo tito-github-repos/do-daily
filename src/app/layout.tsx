@@ -6,7 +6,7 @@ import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 
 export const metadata: Metadata = {
-  title: "DoDaily - Brain Training",
+  title: "DoDaily - Mentors Minds",
   description: "Train your brain. 10 minutes a day.",
   other: { "color-scheme": "light" },
 };
